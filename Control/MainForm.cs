@@ -220,27 +220,32 @@ namespace Control
                 // Count
                 pieces = validData.Split(new Char[] { '&', '@', '#' });
                 int chartN = Int32.Parse(pieces[k]);
-                int[] chartCount = new int[chartN];
-                for (int i = 0; i < chartN;i++ )
+
+                // ChartN为0说明没有图表，不需要初始化Chart
+                if(chartN != 0)
                 {
-                    k++;
-                    chartCount[i] = Int32.Parse(pieces[k]);
-                }
-                // Name
-                int[] tmp = new int[chartN];
-                chartCount.CopyTo(tmp, 0);
-                Array.Sort(tmp);
-                SeriesName = new string[chartN, tmp[chartN - 1]];
-                for (int i = 0; i < chartN; i++)
-                {
-                    for (int j = 0; j < chartCount[i]; j++)
+                    int[] chartCount = new int[chartN];
+                    for (int i = 0; i < chartN; i++)
                     {
                         k++;
-                        SeriesName[i, j] = pieces[k];
+                        chartCount[i] = Int32.Parse(pieces[k]);
                     }
+                    // Name
+                    int[] tmp = new int[chartN];
+                    chartCount.CopyTo(tmp, 0);
+                    Array.Sort(tmp);
+                    SeriesName = new string[chartN, tmp[chartN - 1]];
+                    for (int i = 0; i < chartN; i++)
+                    {
+                        for (int j = 0; j < chartCount[i]; j++)
+                        {
+                            k++;
+                            SeriesName[i, j] = pieces[k];
+                        }
+                    }
+                    ChartInit(chartN, chartCount);
                 }
-                ChartInit(chartN, chartCount);
-
+                
                 // Parameter
                 k++;
                 int paraN = Int32.Parse(pieces[k]);
